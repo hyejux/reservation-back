@@ -8,7 +8,7 @@ server:
 
 spring:
   application:
-    name: odockodock-api
+    name: reservation-api
 
   config:
     import: optional:file:.env[.properties]

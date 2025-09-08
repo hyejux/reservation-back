@@ -1,0 +1,138 @@
+create database reservation;
+
+use reservation;
+
+show tables;
+
+
+-- STORE_OPERATION_HOURS (가게 영업 시간)
+CREATE TABLE store_operation_hours (
+    id BIGINT NOT NULL,
+    store_id BIGINT NOT NULL,
+    day_of_week TINYINT NULL,
+    start_time TIME NULL,
+    end_time TIME NULL,
+    slot_duration INT NULL,      -- 단위 시간(분)
+    is_active VARCHAR(255) NULL,
+    created_at TIMESTAMP NULL,
+    updated_at TIMESTAMP NULL,
+    CONSTRAINT PK_store_operation_hours PRIMARY KEY (id, store_id)
+);
+
+-- USERS (사용자)
+CREATE TABLE users (
+    user_id BIGINT NOT NULL,
+    email VARCHAR(255) NULL,
+    password VARCHAR(255) NULL,
+    name VARCHAR(100) NULL,
+    phone_number VARCHAR(20) NULL,
+    created_at TIMESTAMP NULL,
+    updated_at TIMESTAMP NULL,
+    is_active ENUM('PENDING', 'CONFIRMED', 'CANCELLED') NULL,
+    CONSTRAINT PK_users PRIMARY KEY (user_id)
+);
+
+-- SERVICES (서비스)
+CREATE TABLE services (
+    service_id BIGINT NOT NULL,
+    name VARCHAR(255) NULL,
+    description TEXT NULL,
+    category VARCHAR(100) NULL,
+    price INT NULL,
+    created_at TIMESTAMP NULL,
+    updated_at TIMESTAMP NULL,
+    is_active ENUM('PENDING', 'CONFIRMED', 'CANCELLED') NULL,
+    store_id BIGINT NOT NULL,
+    CONSTRAINT PK_services PRIMARY KEY (service_id)
+);
+
+-- PAYMENT (결제/환불)
+CREATE TABLE payment (
+    payment_id BIGINT NOT NULL,
+    amount INT NULL,
+    status VARCHAR(20) NULL,
+    type VARCHAR(20) NULL,
+    payment_method VARCHAR(50) NULL,
+    pg_transaction_id VARCHAR(40) NULL,
+    requested_at TIMESTAMP NULL,
+    processed_at TIMESTAMP NULL,
+    refunded_at TIMESTAMP NULL,
+    fail_reason VARCHAR(100) NULL,
+    memo VARCHAR(100) NULL,
+    created_at TIMESTAMP NULL,
+    updated_at TIMESTAMP NULL,
+    reservation_id BIGINT NOT NULL,
+    CONSTRAINT PK_payment PRIMARY KEY (payment_id)
+);
+
+-- RESERVATION_DTL (예약 상세 정보)
+CREATE TABLE reservation_dtl (
+    reservation_id BIGINT NOT NULL,
+    special_requests TEXT NULL,
+    cancellation_policy VARCHAR(100) NULL,
+    CONSTRAINT PK_reservation_dtl PRIMARY KEY (reservation_id)
+);
+
+-- RESERVATION_HDR (예약 기본 정보)
+CREATE TABLE reservation_hdr (
+    reservation_id BIGINT NOT NULL,
+    date DATE NULL,
+    time TIME NULL,
+    status VARCHAR(20) NULL,
+    created_at TIMESTAMP NULL,
+    updated_at TIMESTAMP NULL,
+    is_active ENUM('PENDING', 'CONFIRMED', 'CANCELLED') NULL,
+    user_id BIGINT NOT NULL,
+    service_id BIGINT NOT NULL,
+    CONSTRAINT PK_reservation_hdr PRIMARY KEY (reservation_id)
+);
+
+-- RESERVATION_HISTORY (예약 상태 변경 이력)
+CREATE TABLE reservation_history (
+    history_id BIGINT NOT NULL,
+    changed_by BIGINT NULL,
+    status_before VARCHAR(100) NULL,
+    status_after VARCHAR(100) NULL,
+    changed_at TIMESTAMP NULL,
+    reason VARCHAR(255) NULL,
+    reservation_id BIGINT NOT NULL,
+    CONSTRAINT PK_reservation_history PRIMARY KEY (history_id)
+);
+
+-- STORES (가게)
+CREATE TABLE stores (
+    store_id BIGINT NOT NULL,
+    name VARCHAR(255) NULL,
+    owner_name VARCHAR(100) NULL,
+    phone_number VARCHAR(20) NULL,
+    address VARCHAR(500) NULL,
+    description TEXT NULL,
+    category VARCHAR(100) NULL,
+    biz_registration_num VARCHAR(20) NULL,
+    created_at TIMESTAMP NULL,
+    updated_at TIMESTAMP NULL,
+    is_approved BOOLEAN NULL,
+    CONSTRAINT PK_stores PRIMARY KEY (store_id)
+);
+
+-- Foreign Keys
+ALTER TABLE store_operation_hours ADD CONSTRAINT FK_stores_TO_store_operation_hours
+    FOREIGN KEY (store_id) REFERENCES stores (store_id);
+
+ALTER TABLE services ADD CONSTRAINT FK_stores_TO_services
+    FOREIGN KEY (store_id) REFERENCES stores (store_id);
+
+ALTER TABLE reservation_hdr ADD CONSTRAINT FK_users_TO_reservation_hdr
+    FOREIGN KEY (user_id) REFERENCES users (user_id);
+
+ALTER TABLE reservation_hdr ADD CONSTRAINT FK_services_TO_reservation_hdr
+    FOREIGN KEY (service_id) REFERENCES services (service_id);
+
+ALTER TABLE reservation_dtl ADD CONSTRAINT FK_reservation_hdr_TO_reservation_dtl
+    FOREIGN KEY (reservation_id) REFERENCES reservation_hdr (reservation_id);
+
+ALTER TABLE reservation_history ADD CONSTRAINT FK_reservation_hdr_TO_reservation_history
+    FOREIGN KEY (reservation_id) REFERENCES reservation_hdr (reservation_id);
+
+ALTER TABLE payment ADD CONSTRAINT FK_reservation_hdr_TO_payment
+    FOREIGN KEY (reservation_id) REFERENCES reservation_hdr (reservation_id);
