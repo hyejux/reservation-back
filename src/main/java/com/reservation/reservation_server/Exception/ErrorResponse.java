@@ -1,4 +1,4 @@
-package com.reservation.reservation_server.Exception;
+package com.reservation.reservation_server.exception;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
