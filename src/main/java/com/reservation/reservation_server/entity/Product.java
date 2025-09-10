@@ -1,10 +1,12 @@
 package com.reservation.reservation_server.entity;
 
+import com.reservation.reservation_server.common.ServiceStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -19,6 +21,7 @@ public class Product {
 
     @Id
     @Column(name = "product_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long productId;
 
     private String name;
@@ -29,15 +32,17 @@ public class Product {
 
     private Integer price;
 
+    @CreationTimestamp
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
+    @CreationTimestamp
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "is_active")
-    private ServiceStatus isActive;
+    @Column(name = "status")
+    private ServiceStatus status;
 
     @Column(name = "store_id")
     private Long storeId;
@@ -49,10 +54,5 @@ public class Product {
     @OneToMany(mappedBy = "product")
     private List<ReservationHdr> reservationHdr;
 
-    // ServiceStatus enum
-    public enum ServiceStatus {
-        PENDING, CONFIRMED, CANCELLED
-    }
 
-    // getters and setters
 }

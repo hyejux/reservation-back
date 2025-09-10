@@ -28,8 +28,6 @@ public class QProduct extends EntityPathBase<Product> {
 
     public final StringPath description = createString("description");
 
-    public final EnumPath<Product.ServiceStatus> isActive = createEnum("isActive", Product.ServiceStatus.class);
-
     public final StringPath name = createString("name");
 
     public final NumberPath<Integer> price = createNumber("price", Integer.class);
@@ -37,6 +35,8 @@ public class QProduct extends EntityPathBase<Product> {
     public final NumberPath<Long> productId = createNumber("productId", Long.class);
 
     public final ListPath<ReservationHdr, QReservationHdr> reservationHdr = this.<ReservationHdr, QReservationHdr>createList("reservationHdr", ReservationHdr.class, QReservationHdr.class, PathInits.DIRECT2);
+
+    public final EnumPath<com.reservation.reservation_server.common.ServiceStatus> status = createEnum("status", com.reservation.reservation_server.common.ServiceStatus.class);
 
     public final QStore store;
 

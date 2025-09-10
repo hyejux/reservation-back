@@ -53,7 +53,7 @@ public class JwtUtil {
      */
     private String createToken(CustomUserInfoDto user, long expireTime) {
         Claims claims = Jwts.claims();
-        claims.put("memberId", user.getUserId());
+        claims.put("userId", user.getUserId());
         claims.put("email", user.getEmail());
         claims.put("name", user.getName());
 //        claims.put("role", user.getRole()); //USER, ADMIN
@@ -76,7 +76,7 @@ public class JwtUtil {
      * @return User ID
      */
     public Long getUserId(String token) {
-        return parseClaims(token).get("memberId", Long.class);
+        return parseClaims(token).get("userId", Long.class);
     }
 
     /**
