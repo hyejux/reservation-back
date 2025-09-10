@@ -6,6 +6,7 @@ import com.reservation.reservation_server.dto.product.ProductResponseDto;
 import com.reservation.reservation_server.entity.Product;
 import com.reservation.reservation_server.repository.AdminProductRepository;
 import com.reservation.reservation_server.service.admin.AdminProductService;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -34,26 +35,61 @@ public class AdminProductServiceImpl implements AdminProductService {
                 .collect(Collectors.toList());
     }
 
-    @Override
+    @Transactional
     public ProductResponseDto getDetailProduct(Long productId, Long storeId) {
         Product product = adminProductRepository.findAllByStoreIdAndProductId(productId, storeId);
 
         return toProductResponseDto(product);
     }
 
-    @Override
-    public ResponseEntity<Product> createProduct(Long storeId, ProductRequsetDto productDto) {
+    @Transactional
+    public Product createProduct(Long storeId, ProductRequsetDto requsetDto) {
 
         Product product = new Product();
         product.setStoreId(storeId);
-        product.setName(productDto.getName());
-        product.setPrice(productDto.getPrice());
-        product.setCategory(productDto.getCategory());
-        product.setDescription(productDto.getDescription());
+        product.setName(requsetDto.getName());
+        product.setPrice(requsetDto.getPrice());
+        product.setCategory(requsetDto.getCategory());
+        product.setDescription(requsetDto.getDescription());
         product.setStatus(ServiceStatus.PENDING);
 
-        return ResponseEntity.ok(adminProductRepository.save(product));
+        return adminProductRepository.save(product);
     }
+
+    @Transactional
+    public Product updateProduct(Long storeId, Long productId, ProductRequsetDto requsetDto) {
+        Product product = adminProductRepository.findById(productId)
+                .orElseThrow(() -> new RuntimeException("상품 없음"));
+
+        product.setStoreId(storeId);
+
+        if (requsetDto.getName() != null) product.setName(requsetDto.getName());
+        if (requsetDto.getPrice() != null) product.setPrice(requsetDto.getPrice());
+        if (requsetDto.getCategory() != null) product.setCategory(requsetDto.getCategory());
+        if (requsetDto.getDescription() != null) product.setDescription(requsetDto.getDescription());
+
+        product.setStatus(ServiceStatus.PENDING);
+
+        return product;
+    }
+
+    @Transactional
+    public Product deleteProduct(Long storeId, Long productId) {
+        Product product = adminProductRepository.findById(productId)
+                .orElseThrow(() -> new RuntimeException("상품 없음"));
+
+        // 소유자 체크 필요하면 추가
+//        if (!product.getStoreId().equals(storeId)) {
+//            throw new RuntimeException("권한 없음");
+//        }
+
+        product.setStatus(ServiceStatus.DELETED); // 논리 삭제 처리
+
+        return product; // 트랜잭션 안에서 자동 반영
+    }
+
+
+
 
     // Product를 ProductResponseDto로 변환하는 메서드 예시
     private ProductResponseDto toProductResponseDto(Product product) {

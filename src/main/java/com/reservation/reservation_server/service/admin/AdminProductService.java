@@ -12,5 +12,7 @@ public interface AdminProductService {
 
     List<ProductResponseDto> getProduct(Long storeId);
     ProductResponseDto getDetailProduct(Long productId, Long storeId);
-    ResponseEntity<?> createProduct(Long storeId, ProductRequsetDto productDto);
+    Product createProduct(Long storeId, ProductRequsetDto productDto);
+    Product updateProduct(Long storeId, Long productId , ProductRequsetDto requsetDto);
+    Product deleteProduct(Long storeId, Long productId);
 }
