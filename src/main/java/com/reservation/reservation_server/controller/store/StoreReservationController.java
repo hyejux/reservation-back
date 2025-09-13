@@ -3,7 +3,7 @@ package com.reservation.reservation_server.controller.store;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/admin")
+@RequestMapping("/store")
 public class StoreReservationController {
 
     /**
