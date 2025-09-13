@@ -33,13 +33,16 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
                        final AccessDeniedException accessDeniedException) throws IOException, ServletException {
         log.error("No Authorities", accessDeniedException);
 
-        ErrorResponseDto errorResponseDto = new ErrorResponseDto(HttpStatus.FORBIDDEN.value(),
+        ErrorResponseDto errorResponseDto = new ErrorResponseDto(
+                HttpStatus.FORBIDDEN.value(),
                 accessDeniedException.getMessage(),
-                LocalDateTime.now());
+                LocalDateTime.now()
+        );
 
         String responseBody = objectMapper.writeValueAsString(errorResponseDto);
+
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-        response.setStatus(HttpStatus.UNAUTHORIZED.value());
+        response.setStatus(HttpStatus.FORBIDDEN.value());  // 403 Forbidden 상태 코드 설정
         response.setCharacterEncoding("UTF-8");
         response.getWriter().write(responseBody);
     }

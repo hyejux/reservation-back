@@ -6,6 +6,7 @@ import com.reservation.reservation_server.dto.product.ProductResponseDto;
 import com.reservation.reservation_server.entity.Product;
 import com.reservation.reservation_server.repository.StoreProductRepository;
 import com.reservation.reservation_server.service.store.StoreProductService;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,8 +36,7 @@ public class StoreProductServiceImpl implements StoreProductService {
 
     @Transactional
     public ProductResponseDto getDetailProduct(Long productId, Long storeId) {
-        Product product = storeProductRepository.findAllByStoreIdAndProductId(productId, storeId);
-
+        Product product = storeProductRepository.findByProductIdAndStoreId(productId, storeId);
         return toProductResponseDto(product);
     }
 

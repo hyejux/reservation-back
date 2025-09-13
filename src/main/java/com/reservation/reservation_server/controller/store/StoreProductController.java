@@ -9,6 +9,7 @@ import com.reservation.reservation_server.service.store.StoreProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -31,7 +32,7 @@ public class StoreProductController {
     @GetMapping("/product")
     public List<ProductResponseDto> getProduct(@AuthenticationPrincipal CustomStoreDetails customStoreDetails) {
         Long storeId = customStoreDetails.getId(); // 임시 user 로 testing
-        System.out.println("여기까지 오긴해");
+        System.out.println("여기까지 오긴해" + storeId);
         return storeProductService.getProduct(storeId);
     }
 
@@ -40,6 +41,8 @@ public class StoreProductController {
     @GetMapping("/product/{productId}")
     public ProductResponseDto getDetailProduct(@PathVariable Long productId, @AuthenticationPrincipal CustomStoreDetails customStoreDetails) {
         Long storeId = customStoreDetails.getId(); // 임시 user 로 testing
+        System.out.println(productId + "productId");
+        System.out.println(storeId + "storeId");
         return storeProductService.getDetailProduct(productId, storeId);
     }
 

@@ -44,10 +44,10 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
                 if (userDetails != null) {
                     //UserDetails, Password, Role -> 접근 권한 인증 Token 생성
+                    System.out.println("권한" + userDetails.getAuthorities());
                     UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
                             userDetails, null, userDetails.getAuthorities());
 
-                    
 
                     //현재 Request의 Security Context에 접근 권한 설정
                     SecurityContextHolder.getContext()

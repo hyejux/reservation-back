@@ -11,7 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/store/auth")
+@RequestMapping("/auth/store")
 public class StoreAuthController {
 
     private final StoreAuthService storeAuthService;

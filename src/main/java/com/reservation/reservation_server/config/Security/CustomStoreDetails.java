@@ -17,7 +17,7 @@ public class CustomStoreDetails implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.singleton(new SimpleGrantedAuthority(store.getRole().name()));
+        return Collections.singleton(new SimpleGrantedAuthority("ROLE_" + store.getRole().name()));
     }
 
     @Override
@@ -27,7 +27,7 @@ public class CustomStoreDetails implements UserDetails {
 
     @Override
     public String getUsername() {
-        return store.getEmail(); 
+        return store.getEmail();
     }
 
     @Override

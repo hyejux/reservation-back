@@ -37,10 +37,10 @@ public class SecurityConfig {
     }
 
     private static final String[] AUTH_WHITELIST = {
-            "/user/auth/login",
-            "/user/auth/signup",
-            "/store/auth/login",
-            "/store/auth/signup",
+            "/auth/user/login",
+            "/auth/user/signup",
+            "/auth/store/login",
+            "/auth/store/signup",
             "/swagger-ui/**",
             "/api-docs",
             "/swagger-ui-custom.html"
@@ -73,8 +73,12 @@ public class SecurityConfig {
 
         // 인가 설정 - 인증이 필요한 경로 설정
         http.authorizeHttpRequests(auth -> auth
-                .requestMatchers(AUTH_WHITELIST).permitAll()
-                .anyRequest().authenticated());
+                .requestMatchers(AUTH_WHITELIST).permitAll()    // 인증 제외 경로 허용
+                .requestMatchers("/store/**").hasRole("STORE")  // /store/**는 STORE 권한만 허용
+                .requestMatchers("/user/**").hasAnyRole("USER","STORE")    // /user/**는 USER 권한만 허용
+                .anyRequest().authenticated()                   // 그 외 모든 요청은 인증 필요
+        );
+
 
         return http.build();
     }
