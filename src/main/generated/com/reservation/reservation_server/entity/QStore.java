@@ -30,7 +30,9 @@ public class QStore extends EntityPathBase<Store> {
 
     public final StringPath description = createString("description");
 
-    public final BooleanPath isApproved = createBoolean("isApproved");
+    public final StringPath email = createString("email");
+
+    public final BooleanPath isActive = createBoolean("isActive");
 
     public final StringPath name = createString("name");
 
@@ -38,9 +40,13 @@ public class QStore extends EntityPathBase<Store> {
 
     public final StringPath ownerName = createString("ownerName");
 
+    public final StringPath password = createString("password");
+
     public final StringPath phoneNumber = createString("phoneNumber");
 
     public final ListPath<Product, QProduct> product = this.<Product, QProduct>createList("product", Product.class, QProduct.class, PathInits.DIRECT2);
+
+    public final EnumPath<com.reservation.reservation_server.common.RoleType> role = createEnum("role", com.reservation.reservation_server.common.RoleType.class);
 
     public final NumberPath<Long> storeId = createNumber("storeId", Long.class);
 

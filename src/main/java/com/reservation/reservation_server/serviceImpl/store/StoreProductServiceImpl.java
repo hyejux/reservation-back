@@ -1,34 +1,32 @@
-package com.reservation.reservation_server.serviceImpl.admin;
+package com.reservation.reservation_server.serviceImpl.store;
 
 import com.reservation.reservation_server.common.ServiceStatus;
 import com.reservation.reservation_server.dto.product.ProductRequsetDto;
 import com.reservation.reservation_server.dto.product.ProductResponseDto;
 import com.reservation.reservation_server.entity.Product;
-import com.reservation.reservation_server.repository.AdminProductRepository;
-import com.reservation.reservation_server.service.admin.AdminProductService;
+import com.reservation.reservation_server.repository.StoreProductRepository;
+import com.reservation.reservation_server.service.store.StoreProductService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class AdminProductServiceImpl implements AdminProductService {
+public class StoreProductServiceImpl implements StoreProductService {
 
-    private final AdminProductRepository adminProductRepository;
+    private final StoreProductRepository storeProductRepository;
 
     @Autowired
-    public AdminProductServiceImpl(AdminProductRepository adminProductRepository) {
-        this.adminProductRepository = adminProductRepository;
+    public StoreProductServiceImpl(StoreProductRepository storeProductRepository) {
+        this.storeProductRepository = storeProductRepository;
     }
 
 
     @Override
     public List<ProductResponseDto> getProduct(Long storeId) {
-        List<Product> products = adminProductRepository.findAllByStoreId(storeId);
+        List<Product> products = storeProductRepository.findAllByStoreId(storeId);
 
         return products.stream()
                 .map(this::toProductResponseDto)
@@ -37,7 +35,7 @@ public class AdminProductServiceImpl implements AdminProductService {
 
     @Transactional
     public ProductResponseDto getDetailProduct(Long productId, Long storeId) {
-        Product product = adminProductRepository.findAllByStoreIdAndProductId(productId, storeId);
+        Product product = storeProductRepository.findAllByStoreIdAndProductId(productId, storeId);
 
         return toProductResponseDto(product);
     }
@@ -53,12 +51,12 @@ public class AdminProductServiceImpl implements AdminProductService {
         product.setDescription(requsetDto.getDescription());
         product.setStatus(ServiceStatus.PENDING);
 
-        return adminProductRepository.save(product);
+        return storeProductRepository.save(product);
     }
 
     @Transactional
     public Product updateProduct(Long storeId, Long productId, ProductRequsetDto requsetDto) {
-        Product product = adminProductRepository.findById(productId)
+        Product product = storeProductRepository.findById(productId)
                 .orElseThrow(() -> new RuntimeException("상품 없음"));
 
         product.setStoreId(storeId);
@@ -75,7 +73,7 @@ public class AdminProductServiceImpl implements AdminProductService {
 
     @Transactional
     public Product deleteProduct(Long storeId, Long productId) {
-        Product product = adminProductRepository.findById(productId)
+        Product product = storeProductRepository.findById(productId)
                 .orElseThrow(() -> new RuntimeException("상품 없음"));
 
         // 소유자 체크 필요하면 추가

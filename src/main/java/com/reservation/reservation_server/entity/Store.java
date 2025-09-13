@@ -1,10 +1,8 @@
 package com.reservation.reservation_server.entity;
 
+import com.reservation.reservation_server.common.RoleType;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
@@ -15,6 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Builder
 @Table(name = "stores")
 public class Store {
 
@@ -22,6 +21,10 @@ public class Store {
     @Column(name = "store_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long storeId;
+
+    private String email;
+
+    private String password;
 
     private String name;
 
@@ -40,6 +43,7 @@ public class Store {
     @Column(name = "biz_registration_num")
     private String bizRegistrationNum;
 
+    @CreationTimestamp
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
@@ -47,15 +51,20 @@ public class Store {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    @CreationTimestamp
-    @Column(name = "is_approved")
-    private Boolean isApproved;
+
+    @Column(name = "is_active")
+    private Boolean isActive = true;  // Boolean으로 바꾸고 초기값 true
+
 
     @OneToMany(mappedBy = "store")
     private List<StoreOperationHour> operationHours;
 
     @OneToMany(mappedBy = "store")
     private List<Product> product;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "role")
+    private RoleType role;
 
     // getters and setters
 }

@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface AdminProductRepository extends JpaRepository<Product,Long> {
+public interface StoreProductRepository extends JpaRepository<Product,Long> {
     List<Product> findAllByStoreId(Long storeId);
     Product findAllByStoreIdAndProductId(Long productId,Long storeId);
 }

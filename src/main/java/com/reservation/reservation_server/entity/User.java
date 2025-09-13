@@ -45,7 +45,7 @@ public class User {
     private LocalDateTime updatedAt;
 
     @Column(name = "is_active")
-    private boolean isActive = true;
+    private Boolean isActive = true;
 
     @OneToMany(mappedBy = "user")
     private List<ReservationHdr> reservationHdrs;

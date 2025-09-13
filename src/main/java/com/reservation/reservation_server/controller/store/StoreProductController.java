@@ -1,11 +1,10 @@
-package com.reservation.reservation_server.controller.admin;
+package com.reservation.reservation_server.controller.store;
 
 import com.reservation.reservation_server.config.Security.CustomUserDetails;
 import com.reservation.reservation_server.dto.product.ProductRequsetDto;
 import com.reservation.reservation_server.dto.product.ProductResponseDto;
 import com.reservation.reservation_server.entity.Product;
-import com.reservation.reservation_server.entity.User;
-import com.reservation.reservation_server.service.admin.AdminProductService;
+import com.reservation.reservation_server.service.store.StoreProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -17,12 +16,12 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/admin")
-public class AdminProductController {
+public class StoreProductController {
 
-    private final AdminProductService adminProductService;
+    private final StoreProductService adminProductService;
 
     @Autowired
-    public AdminProductController(AdminProductService adminProductService){
+    public StoreProductController(StoreProductService adminProductService){
         this.adminProductService = adminProductService;
     }
 

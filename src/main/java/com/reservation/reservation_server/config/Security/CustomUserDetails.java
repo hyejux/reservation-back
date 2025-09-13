@@ -2,9 +2,11 @@ package com.reservation.reservation_server.config.Security;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import com.reservation.reservation_server.dto.CustomUserInfoDto;
+import com.reservation.reservation_server.entity.Store;
 import com.reservation.reservation_server.entity.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -44,5 +46,8 @@ public class CustomUserDetails implements UserDetails {
     public boolean isCredentialsNonExpired() { return true; }
 
     @Override
-    public boolean isEnabled() { return user.isActive(); }
+    public boolean isEnabled() {
+        return user.getIsActive();
+    }
 }
+

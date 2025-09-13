@@ -1,10 +1,10 @@
-package com.reservation.reservation_server.controller.admin;
+package com.reservation.reservation_server.controller.store;
 
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/admin")
-public class AdminReservationController {
+public class StoreReservationController {
 
     /**
      * 관리자 예약 조회
