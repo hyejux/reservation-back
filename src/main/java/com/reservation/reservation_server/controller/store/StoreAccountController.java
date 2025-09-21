@@ -2,10 +2,8 @@ package com.reservation.reservation_server.controller.store;
 
 
 import com.reservation.reservation_server.config.Security.CustomStoreDetails;
-import com.reservation.reservation_server.config.Security.CustomUserDetails;
 import com.reservation.reservation_server.dto.StoreResponseDto;
-import com.reservation.reservation_server.dto.UserResponseDto;
-import com.reservation.reservation_server.service.user.StoreAccountServcie;
+import com.reservation.reservation_server.service.store.StoreAccountServcie;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -1,11 +1,9 @@
 package com.reservation.reservation_server.serviceImpl.user;
 
 import com.reservation.reservation_server.dto.StoreResponseDto;
-import com.reservation.reservation_server.dto.UserResponseDto;
 import com.reservation.reservation_server.entity.Store;
-import com.reservation.reservation_server.entity.User;
 import com.reservation.reservation_server.repository.StoreRepository;
-import com.reservation.reservation_server.service.user.StoreAccountServcie;
+import com.reservation.reservation_server.service.store.StoreAccountServcie;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -1,10 +1,12 @@
 package com.reservation.reservation_server.entity;
 
+import com.reservation.reservation_server.common.ReservationStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -20,6 +22,7 @@ import java.util.List;
 public class ReservationHdr {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "reservation_id")
     private Long reservationId;
 
@@ -27,17 +30,18 @@ public class ReservationHdr {
 
     private LocalTime time;
 
-    private String status;
+    private ReservationStatus status;
 
     @Column(name = "created_at")
+    @CreationTimestamp
     private LocalDateTime createdAt;
 
     @Column(name = "updated_at")
+    @CreationTimestamp
     private LocalDateTime updatedAt;
 
-    @Enumerated(EnumType.STRING)
     @Column(name = "is_active")
-    private ReservationStatus isActive;
+    private Boolean isActive;
 
     @Column(name = "user_id")
     private Long userId;
@@ -46,26 +50,28 @@ public class ReservationHdr {
     @JoinColumn(name = "user_id", insertable = false, updatable = false)
     private User user;
 
-    @Column(name = "service_id")
+    @Column(name = "product_id")
     private Long productId;
 
+    @Column(name = "store_id")
+    private Long storeId;
+
     @ManyToOne
-    @JoinColumn(name = "service_id", insertable = false, updatable = false)
+    @JoinColumn(name = "product_id", insertable = false, updatable = false)
     private Product product;
 
-    @OneToOne(mappedBy = "reservationHdr", cascade = CascadeType.ALL)
-    private ReservationDtl reservationDtl;
+    @ManyToOne
+    @JoinColumn(name = "store_id", insertable = false, updatable = false )
+    private Store store;
 
-    @OneToMany(mappedBy = "reservationHdr")
-    private List<ReservationHistory> reservationHistories;
+//    @OneToOne(mappedBy = "reservationHdr", cascade = CascadeType.ALL)
+//    private ReservationDtl reservationDtl;
+//
+//    @OneToMany(mappedBy = "reservationHdr")
+//    private List<ReservationHistory> reservationHistories;
+//
+//    @OneToMany(mappedBy = "reservationHdr")
+//    private List<Payment> payments;
 
-    @OneToMany(mappedBy = "reservationHdr")
-    private List<Payment> payments;
 
-    // ReservationStatus enum
-    public enum ReservationStatus {
-        PENDING, CONFIRMED, CANCELLED
-    }
-
-    // getters and setters
 }

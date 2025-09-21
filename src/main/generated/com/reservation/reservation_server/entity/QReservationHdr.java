@@ -26,21 +26,19 @@ public class QReservationHdr extends EntityPathBase<ReservationHdr> {
 
     public final DatePath<java.time.LocalDate> date = createDate("date", java.time.LocalDate.class);
 
-    public final EnumPath<ReservationHdr.ReservationStatus> isActive = createEnum("isActive", ReservationHdr.ReservationStatus.class);
-
-    public final ListPath<Payment, QPayment> payments = this.<Payment, QPayment>createList("payments", Payment.class, QPayment.class, PathInits.DIRECT2);
+    public final BooleanPath isActive = createBoolean("isActive");
 
     public final QProduct product;
 
     public final NumberPath<Long> productId = createNumber("productId", Long.class);
 
-    public final QReservationDtl reservationDtl;
-
-    public final ListPath<ReservationHistory, QReservationHistory> reservationHistories = this.<ReservationHistory, QReservationHistory>createList("reservationHistories", ReservationHistory.class, QReservationHistory.class, PathInits.DIRECT2);
-
     public final NumberPath<Long> reservationId = createNumber("reservationId", Long.class);
 
-    public final StringPath status = createString("status");
+    public final EnumPath<com.reservation.reservation_server.common.ReservationStatus> status = createEnum("status", com.reservation.reservation_server.common.ReservationStatus.class);
+
+    public final QStore store;
+
+    public final NumberPath<Long> storeId = createNumber("storeId", Long.class);
 
     public final TimePath<java.time.LocalTime> time = createTime("time", java.time.LocalTime.class);
 
@@ -69,7 +67,7 @@ public class QReservationHdr extends EntityPathBase<ReservationHdr> {
     public QReservationHdr(Class<? extends ReservationHdr> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
         this.product = inits.isInitialized("product") ? new QProduct(forProperty("product"), inits.get("product")) : null;
-        this.reservationDtl = inits.isInitialized("reservationDtl") ? new QReservationDtl(forProperty("reservationDtl"), inits.get("reservationDtl")) : null;
+        this.store = inits.isInitialized("store") ? new QStore(forProperty("store")) : null;
         this.user = inits.isInitialized("user") ? new QUser(forProperty("user")) : null;
     }
 

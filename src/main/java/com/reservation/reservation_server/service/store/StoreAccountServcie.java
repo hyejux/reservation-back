@@ -1,7 +1,6 @@
-package com.reservation.reservation_server.service.user;
+package com.reservation.reservation_server.service.store;
 
 import com.reservation.reservation_server.dto.StoreResponseDto;
-import com.reservation.reservation_server.dto.UserResponseDto;
 
 public interface StoreAccountServcie {
 

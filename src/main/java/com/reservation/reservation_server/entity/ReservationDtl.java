@@ -29,5 +29,4 @@ public class ReservationDtl {
     @Column(name = "cancellation_policy")
     private String cancellationPolicy;
 
-    // getters and setters
 }
