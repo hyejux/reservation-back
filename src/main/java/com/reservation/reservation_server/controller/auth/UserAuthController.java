@@ -2,12 +2,16 @@ package com.reservation.reservation_server.controller.auth;
 
 import com.reservation.reservation_server.dto.LoginRequestDto;
 import com.reservation.reservation_server.dto.UserSignupRequestDto;
+import com.reservation.reservation_server.dto.auth.UserLoginResponseDto;
 import com.reservation.reservation_server.entity.User;
 import com.reservation.reservation_server.service.auth.UserAuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/auth/user")
@@ -40,11 +44,18 @@ public class UserAuthController {
      * 사용자 로그인 (JWT 토큰 발급)
      */
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody LoginRequestDto request) {
+    public ResponseEntity<Map<String, Object>> login(@RequestBody LoginRequestDto request) {
+        // 로그인 시 토큰 발급 및 사용자 정보 조회
+        UserLoginResponseDto loginResponse = userAuthService.login(request);
 
-        String token =  userAuthService.login(request);
+        Map<String, Object> body = new HashMap<>();
+        body.put("accessToken", loginResponse.getAccessToken());
+        body.put("userName", loginResponse.getUserName());
+        body.put("email", loginResponse.getEmail());
+        body.put("userId", loginResponse.getUserId());
+        body.put("role", loginResponse.getRole());
 
-        return ResponseEntity.status(HttpStatus.OK).body(token);
+        return ResponseEntity.ok(body);
     }
 
     /**

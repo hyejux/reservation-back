@@ -5,6 +5,7 @@ import com.reservation.reservation_server.config.Security.JwtUtil;
 import com.reservation.reservation_server.dto.CustomUserInfoDto;
 import com.reservation.reservation_server.dto.LoginRequestDto;
 import com.reservation.reservation_server.dto.UserSignupRequestDto;
+import com.reservation.reservation_server.dto.auth.UserLoginResponseDto;
 import com.reservation.reservation_server.entity.User;
 import com.reservation.reservation_server.repository.UserRepository;
 import com.reservation.reservation_server.service.auth.UserAuthService;
@@ -14,10 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 
 @Service
@@ -64,21 +62,28 @@ public class UserAuthServiceImpl implements UserAuthService {
 
     @Transactional
     @Override
-    public String login(LoginRequestDto request) {
-
+    public UserLoginResponseDto login(LoginRequestDto request) {
         String email = request.getEmail();
         String password = request.getPassword();
 
         User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new UsernameNotFoundException("이메일이 존재하지 않습니다"));
+                .orElseThrow(() -> new UsernameNotFoundException("이메일이 존재하지 않습니다."));
 
         if (!bCryptPasswordEncoder.matches(password, user.getPassword())) {
-            throw new BadCredentialsException("비밀번호가 일치하지 않습니다");
+            throw new BadCredentialsException("비밀번호가 일치하지 않습니다.");
         }
 
         CustomUserInfoDto info = modelMapper.map(user, CustomUserInfoDto.class);
+        String token = jwtUtil.createAccessToken(info);
 
-        return jwtUtil.createAccessToken(info);
+        return UserLoginResponseDto.builder()
+                .accessToken(token)
+                .userId(user.getUserId())
+                .userName(user.getName())
+                .email(user.getEmail())
+                .role(user.getRole())
+                .build();
     }
+
 
 }

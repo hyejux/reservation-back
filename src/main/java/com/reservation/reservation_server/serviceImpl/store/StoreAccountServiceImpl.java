@@ -1,4 +1,4 @@
-package com.reservation.reservation_server.serviceImpl.user;
+package com.reservation.reservation_server.serviceImpl.store;
 
 import com.reservation.reservation_server.dto.StoreResponseDto;
 import com.reservation.reservation_server.entity.Store;

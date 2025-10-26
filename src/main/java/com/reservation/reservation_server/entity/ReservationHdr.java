@@ -30,6 +30,8 @@ public class ReservationHdr {
 
     private LocalTime time;
 
+    @Enumerated(EnumType.STRING)
+    @Column(length = 10) // length 제한 확인
     private ReservationStatus status;
 
     @Column(name = "created_at")

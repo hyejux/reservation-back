@@ -47,9 +47,9 @@ public class StoreProductServiceImpl implements StoreProductService {
         product.setStoreId(storeId);
         product.setName(requsetDto.getName());
         product.setPrice(requsetDto.getPrice());
-        product.setCategory(requsetDto.getCategory());
+//        product.setCategory(requsetDto.getCategory());
         product.setDescription(requsetDto.getDescription());
-        product.setStatus(ServiceStatus.PENDING);
+        product.setStatus(ServiceStatus.CONFIRMED);
 
         return storeProductRepository.save(product);
     }
@@ -63,10 +63,10 @@ public class StoreProductServiceImpl implements StoreProductService {
 
         if (requsetDto.getName() != null) product.setName(requsetDto.getName());
         if (requsetDto.getPrice() != null) product.setPrice(requsetDto.getPrice());
-        if (requsetDto.getCategory() != null) product.setCategory(requsetDto.getCategory());
+//        if (requsetDto.getCategory() != null) product.setCategory(requsetDto.getCategory());
         if (requsetDto.getDescription() != null) product.setDescription(requsetDto.getDescription());
 
-        product.setStatus(ServiceStatus.PENDING);
+        product.setStatus(ServiceStatus.CONFIRMED);
 
         return product;
     }
@@ -95,7 +95,7 @@ public class StoreProductServiceImpl implements StoreProductService {
                 .productId(product.getProductId())
                 .name(product.getName())
                 .description(product.getDescription())
-                .category(product.getCategory())
+//                .category(product.getCategory())
                 .price(product.getPrice())
                 .createdAt(product.getCreatedAt())
                 .updatedAt(product.getUpdatedAt())

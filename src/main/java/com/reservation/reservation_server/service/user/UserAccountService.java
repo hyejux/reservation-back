@@ -5,7 +5,6 @@ import com.reservation.reservation_server.dto.UserResponseDto;
 import com.reservation.reservation_server.entity.User;
 
 public interface UserAccountService {
-
-    UserResponseDto getUserInfo(Long userId);
+    public UserResponseDto getUserInfo(Long userId) ;
 
 }

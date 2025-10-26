@@ -28,8 +28,6 @@ public class Product {
 
     private String description;
 
-    private String category;
-
     private Integer price;
 
     @CreationTimestamp
@@ -53,6 +51,11 @@ public class Product {
 
     @OneToMany(mappedBy = "product")
     private List<ReservationHdr> reservationHdr;
+
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private Category category;
+
 
 
 }

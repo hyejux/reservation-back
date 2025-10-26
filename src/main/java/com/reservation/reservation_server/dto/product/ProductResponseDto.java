@@ -22,7 +22,7 @@ public class ProductResponseDto {
     private Integer price;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-//    private Long storeId;
+    private Long storeId;
     private ServiceStatus status;
 
 
