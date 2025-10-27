@@ -67,6 +67,19 @@ public class CustomUserDetailsService implements UserDetailsService {
         }
 
     }
+
+    public UserDetails loadUserByIdAndRole(Long id, String role) {
+        if ("Store".equalsIgnoreCase(role)) {
+            return storeRepository.findById(id)
+                    .map(CustomStoreDetails::new)
+                    .orElseThrow(() -> new UsernameNotFoundException("Store not found"));
+        } else { // USER
+            return userRepository.findById(id)
+                    .map(CustomUserDetails::new)
+                    .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        }
+    }
+
 }
 
 

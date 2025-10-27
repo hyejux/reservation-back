@@ -29,33 +29,25 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                                     final FilterChain filterChain) throws ServletException, IOException {
 
         String authorizationHeader = request.getHeader("Authorization");
-        System.out.println("AuthorizationHeader: " + authorizationHeader);
-
-        //JWT 헤더가 있을 경우
-        if(authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
-            System.out.println("JWT 헤더 발견 !!");
+        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
             String token = authorizationHeader.substring(7);
-            //JWT 유효성 검증
+
             if (jwtUtil.isValidToken(token)) {
                 Long userId = jwtUtil.getUserId(token);
-                System.out.println("userId 인자 발견 !! + " + userId);
-                //유저와 토큰 일치 시 userDetails 생성
-                UserDetails userDetails = customUserDetailsService.loadUserById(userId);
+                String role = jwtUtil.getRole(token); // JWT에서 role 추출
+                System.out.println(role + " jwt 에서 가져온 권한 타입임");
+
+                UserDetails userDetails = customUserDetailsService.loadUserByIdAndRole(userId, role);
 
                 if (userDetails != null) {
-                    //UserDetails, Password, Role -> 접근 권한 인증 Token 생성
-                    System.out.println("권한" + userDetails.getAuthorities());
-                    UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
-                            userDetails, null, userDetails.getAuthorities());
-
-
-                    //현재 Request의 Security Context에 접근 권한 설정
-                    SecurityContextHolder.getContext()
-                            .setAuthentication(usernamePasswordAuthenticationToken);
+                    UsernamePasswordAuthenticationToken auth =
+                            new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                    SecurityContextHolder.getContext().setAuthentication(auth);
                 }
             }
         }
 
-        filterChain.doFilter(request, response); //다음 필터로 넘김
+        filterChain.doFilter(request, response);
     }
+
 }

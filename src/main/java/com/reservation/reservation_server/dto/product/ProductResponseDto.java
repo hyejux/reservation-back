@@ -1,6 +1,7 @@
 package com.reservation.reservation_server.dto.product;
 
 import com.reservation.reservation_server.common.ServiceStatus;
+import com.reservation.reservation_server.entity.Category;
 import com.reservation.reservation_server.entity.Product;
 import com.reservation.reservation_server.entity.ReservationHdr;
 import jakarta.validation.constraints.NotBlank;
@@ -18,7 +19,7 @@ public class ProductResponseDto {
     private Long productId;
     private String name;
     private String description;
-    private String category;
+    private Category category;
     private Integer price;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;

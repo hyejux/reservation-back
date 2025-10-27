@@ -4,6 +4,7 @@ import com.reservation.reservation_server.common.RoleType;
 import com.reservation.reservation_server.config.Security.JwtUtil;
 import com.reservation.reservation_server.dto.CustomUserInfoDto;
 import com.reservation.reservation_server.dto.LoginRequestDto;
+import com.reservation.reservation_server.dto.StoreLoginResponseDto;
 import com.reservation.reservation_server.dto.StoreSignupRequestDto;
 import com.reservation.reservation_server.entity.Store;
 import com.reservation.reservation_server.entity.User;
@@ -70,7 +71,7 @@ public class StoreAuthServiceImpl implements StoreAuthService {
 
     @Transactional
     @Override
-    public String login(LoginRequestDto request) {
+    public StoreLoginResponseDto login(LoginRequestDto request) {
 
         String email = request.getEmail();
         String password = request.getPassword();
@@ -82,9 +83,21 @@ public class StoreAuthServiceImpl implements StoreAuthService {
             throw new BadCredentialsException("비밀번호가 일치하지 않습니다");
         }
 
+        // JWT 토큰 생성
         CustomUserInfoDto info = modelMapper.map(store, CustomUserInfoDto.class);
+        String accessToken = jwtUtil.createAccessToken(info); // JWT 토큰 String 반환
 
-        return jwtUtil.createAccessToken(info);
+        // StoreLoginResponseDto에 담아서 반환
+        StoreLoginResponseDto response = new StoreLoginResponseDto(
+                accessToken,
+                store.getStoreId(),
+                store.getName(),
+                store.getEmail(),
+                RoleType.STORE // 스토어는 ADMIN 권한 고정
+        );
+
+        return response;
     }
+
 
 }

@@ -1,8 +1,10 @@
 package com.reservation.reservation_server.serviceImpl.store;
 
 import com.reservation.reservation_server.common.ServiceStatus;
+import com.reservation.reservation_server.dto.CategoryDto;
 import com.reservation.reservation_server.dto.product.ProductRequsetDto;
 import com.reservation.reservation_server.dto.product.ProductResponseDto;
+import com.reservation.reservation_server.entity.Category;
 import com.reservation.reservation_server.entity.Product;
 import com.reservation.reservation_server.repository.StoreProductRepository;
 import com.reservation.reservation_server.service.store.StoreProductService;
@@ -90,16 +92,16 @@ public class StoreProductServiceImpl implements StoreProductService {
 
 
     // Product를 ProductResponseDto로 변환하는 메서드 예시
-    private ProductResponseDto toProductResponseDto(Product product) {
+    public ProductResponseDto toProductResponseDto(Product product) {
         return ProductResponseDto.builder()
                 .productId(product.getProductId())
                 .name(product.getName())
-                .description(product.getDescription())
-//                .category(product.getCategory())
                 .price(product.getPrice())
-                .createdAt(product.getCreatedAt())
-                .updatedAt(product.getUpdatedAt())
                 .status(product.getStatus())
+                .storeId(product.getStoreId())
+                .category(product.getCategory() != null
+                        ? new Category(product.getCategory().getId(), product.getCategory().getName())
+                        : null)
                 .build();
     }
 

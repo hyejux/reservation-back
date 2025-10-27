@@ -46,6 +46,17 @@ public class JwtUtil {
     }
 
     /**
+     * Token에서 role 추출
+     *
+     * @param token JWT
+     * @return role 문자열 (예: "USER", "STORE", "ADMIN")
+     */
+    public String getRole(String token) {
+        return parseClaims(token).get("role", String.class);
+    }
+
+
+    /**
      * JWT 생성
      * @ param user
      * @param expireTime
@@ -56,7 +67,7 @@ public class JwtUtil {
         claims.put("userId", user.getId());
         claims.put("email", user.getEmail());
         claims.put("name", user.getName());
-//        claims.put("role", user.getRole()); //USER, ADMIN
+        claims.put("role", user.getRole()); //USER, ADMIN
 
         ZonedDateTime now = ZonedDateTime.now();
         ZonedDateTime tokenValidity = now.plusSeconds(expireTime);

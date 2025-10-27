@@ -29,7 +29,7 @@ public class StoreProductController {
 
     /**
      * 서비스 조회 */
-    @GetMapping("/product")
+    @GetMapping("/products")
     public List<ProductResponseDto> getProduct(@AuthenticationPrincipal CustomStoreDetails customStoreDetails) {
         Long storeId = customStoreDetails.getId(); // 임시 user 로 testing
         System.out.println("여기까지 오긴해" + storeId);
@@ -38,7 +38,7 @@ public class StoreProductController {
 
     /**
      * 서비스 상세 조회 */
-    @GetMapping("/product/{productId}")
+    @GetMapping("/products/{productId}")
     public ProductResponseDto getDetailProduct(@PathVariable Long productId, @AuthenticationPrincipal CustomStoreDetails customStoreDetails) {
         Long storeId = customStoreDetails.getId(); // 임시 user 로 testing
         System.out.println(productId + "productId");
@@ -48,7 +48,7 @@ public class StoreProductController {
 
     /**
      * 서비스 등록 */
-    @PostMapping("/product")
+    @PostMapping("/products")
     public ResponseEntity<?> createProduct(@AuthenticationPrincipal CustomStoreDetails customStoreDetails, @RequestBody ProductRequsetDto requsetDto) {
         Long storeId = customStoreDetails.getId(); // 임시 user 로 testing
         storeProductService.createProduct(storeId, requsetDto);

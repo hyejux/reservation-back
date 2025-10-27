@@ -61,7 +61,9 @@ public class UserProductServiceImpl implements UserProductService {
                 .productId(product.getProductId())
                 .name(product.getName())
                 .description(product.getDescription())
-                .category(product.getCategory() != null ? product.getCategory().getName() : null) // null 체크 추가
+                .category(product.getCategory() != null
+                        ? new Category(product.getCategory().getId(), product.getCategory().getName())
+                        : null)
                 .price(product.getPrice())
                 .createdAt(product.getCreatedAt())
                 .updatedAt(product.getUpdatedAt())
