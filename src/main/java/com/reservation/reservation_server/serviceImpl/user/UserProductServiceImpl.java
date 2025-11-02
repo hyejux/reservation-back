@@ -49,6 +49,26 @@ public class UserProductServiceImpl implements UserProductService {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public List<ProductDto> getProductsByCategory(Long categoryId) {
+        List<Product> products = userProductRepository.findByCategory_Id(categoryId);
+
+        return products.stream()
+                .map(product -> new ProductDto(
+                        product.getProductId(),
+                        product.getStoreId(),
+                        product.getStore() != null ? product.getStore().getName() : null,
+                        product.getName(),
+                        product.getDescription(),
+                        product.getCategory() != null ? product.getCategory().getName() : null,
+                        product.getPrice(),
+                        product.getStatus(),
+                        product.getCreatedAt() != null ? product.getCreatedAt().toString() : null,
+                        product.getUpdatedAt() != null ? product.getUpdatedAt().toString() : null
+                ))
+                .collect(Collectors.toList());
+    }
+
     @Transactional
     public ProductResponseDto getDetailProduct(Long productId) {
         Product product = userProductRepository.findAllByProductId(productId);
@@ -81,4 +101,6 @@ public class UserProductServiceImpl implements UserProductService {
                 .map(c -> new CategoryDto(c.getId(), c.getName()))
                 .collect(Collectors.toList());
     }
+
+
 }

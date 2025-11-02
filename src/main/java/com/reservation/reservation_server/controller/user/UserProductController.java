@@ -8,10 +8,7 @@ import com.reservation.reservation_server.entity.Product;
 import com.reservation.reservation_server.service.user.UserProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -22,15 +19,24 @@ public class UserProductController {
 
     private final UserProductService userProductService;
 
+
     @Autowired
     public UserProductController(UserProductService userProductService){
         this.userProductService = userProductService;
     }
 
+
+    /**
+     * 전체 상품 조회 & 카테고리별 상품 조회 */
     @GetMapping("/product")
-    public List<ProductDto> getProduct() {
-        return userProductService.getProduct();
+    public List<ProductDto> getProducts(@RequestParam(required = false) Long category) {
+        if (category != null) {
+            return userProductService.getProductsByCategory(category);
+        } else {
+            return userProductService.getProduct();
+        }
     }
+
 
     /**
      * 서비스 상세 조회 */
@@ -44,11 +50,13 @@ public class UserProductController {
 
 
     /**
-     * 카테고리 조회
+     * 전체 카테고리 조회
      */
     @GetMapping("/product/category")
     public List<CategoryDto> getCategory() {
         return userProductService.getCategory();
     }
+
+
 
 }

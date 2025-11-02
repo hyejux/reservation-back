@@ -12,4 +12,5 @@ public interface UserProductService {
     List<ProductDto> getProduct();
     ProductResponseDto getDetailProduct(Long productId);
     List<CategoryDto> getCategory();
+    List<ProductDto> getProductsByCategory(Long category);
 }
