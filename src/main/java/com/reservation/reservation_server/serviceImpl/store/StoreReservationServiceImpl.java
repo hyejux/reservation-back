@@ -3,10 +3,12 @@ import com.reservation.reservation_server.common.ReservationStatus;
 import com.reservation.reservation_server.dto.ReservationFormDto;
 import com.reservation.reservation_server.dto.ReservationResponseDto;
 import com.reservation.reservation_server.dto.ReservationSaveResult;
+import com.reservation.reservation_server.dto.ReservationStatusUpdateRequest;
 import com.reservation.reservation_server.entity.ReservationHdr;
 import com.reservation.reservation_server.repository.ReservationRepository;
 import com.reservation.reservation_server.service.store.StoreReservationService;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,8 +28,6 @@ public class StoreReservationServiceImpl implements StoreReservationService {
 
     @Override
     public List<ReservationResponseDto> getReservations(Long storeId) {
-
-
         List<ReservationHdr> reservations = reservationRepository.findAllByStore_StoreId(storeId);
 
         System.out.println(reservations.size() + "예약 건수");
@@ -98,11 +98,22 @@ public class StoreReservationServiceImpl implements StoreReservationService {
         return dto;
     }
 
-
     @Override
     public ReservationSaveResult createReservation(ReservationFormDto dto) {
         return null;
     }
+
+
+    @Transactional
+    public void updateReservation(ReservationStatusUpdateRequest request) {
+        ReservationHdr reservation = reservationRepository.findById(request.getReservationId())
+                .orElseThrow(() -> new RuntimeException("예약을 찾을 수 없습니다."));
+
+        reservation.setStatus(request.getStatus()); // ReservationStatus 적용
+
+        reservationRepository.save(reservation);
+    }
+
 
     @Override
     public void cancelReservation(Long reservationId, Long storeId) {

@@ -42,11 +42,8 @@ public class Product {
     @Column(name = "status")
     private ServiceStatus status;
 
-    @Column(name = "store_id")
-    private Long storeId;
-
     @ManyToOne
-    @JoinColumn(name = "store_id", insertable = false, updatable = false)
+    @JoinColumn(name = "store_id")
     private Store store;
 
     @OneToMany(mappedBy = "product")

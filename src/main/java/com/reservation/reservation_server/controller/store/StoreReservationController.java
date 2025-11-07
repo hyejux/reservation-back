@@ -3,6 +3,7 @@ package com.reservation.reservation_server.controller.store;
 import com.reservation.reservation_server.config.Security.CustomStoreDetails;
 
 import com.reservation.reservation_server.dto.ReservationResponseDto;
+import com.reservation.reservation_server.dto.ReservationStatusUpdateRequest;
 import com.reservation.reservation_server.service.store.StoreProductService;
 import com.reservation.reservation_server.service.store.StoreReservationService;
 import jakarta.persistence.EntityNotFoundException;
@@ -42,6 +43,7 @@ public class StoreReservationController {
     public ResponseEntity<ReservationResponseDto> getReservationDetail(@PathVariable Long reservationId,
                                           @AuthenticationPrincipal CustomStoreDetails customStoreDetails) {
         Long storeId = customStoreDetails.getId();
+        System.out.println("실행됨" + reservationId);
         try {
             ReservationResponseDto dto = storeReservationService.getReservationDetail(storeId, reservationId);
             return ResponseEntity.ok(dto);
@@ -53,10 +55,12 @@ public class StoreReservationController {
     /**
      * 관리자 예약 수정
      */
-    @PostMapping
-    public void updateReservation(){
-
+    @PatchMapping("/reservations/update")
+    public ResponseEntity<Void> updateReservation(@RequestBody ReservationStatusUpdateRequest request) {
+        storeReservationService.updateReservation(request);
+        return ResponseEntity.ok().build(); // 200 OK 반환
     }
+
 
     /**
      * 관리자 예약 취소

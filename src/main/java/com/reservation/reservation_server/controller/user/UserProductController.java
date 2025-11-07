@@ -50,8 +50,7 @@ public class UserProductController {
 
 
     /**
-     * 전체 카테고리 조회
-     */
+     * 전체 카테고리 조회 */
     @GetMapping("/product/category")
     public List<CategoryDto> getCategory() {
         return userProductService.getCategory();

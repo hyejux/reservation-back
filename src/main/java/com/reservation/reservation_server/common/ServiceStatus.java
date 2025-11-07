@@ -6,5 +6,5 @@ import lombok.Getter;
 import lombok.Setter;
 
 public enum ServiceStatus {
-  CONFIRMED, DELETED
+  CONFIRMED, PENDING, DELETED
 }

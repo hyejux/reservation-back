@@ -40,8 +40,6 @@ public class QProduct extends EntityPathBase<Product> {
 
     public final QStore store;
 
-    public final NumberPath<Long> storeId = createNumber("storeId", Long.class);
-
     public final DateTimePath<java.time.LocalDateTime> updatedAt = createDateTime("updatedAt", java.time.LocalDateTime.class);
 
     public QProduct(String variable) {
@@ -62,7 +60,7 @@ public class QProduct extends EntityPathBase<Product> {
 
     public QProduct(Class<? extends Product> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
-        this.category = inits.isInitialized("category") ? new QCategory(forProperty("category")) : null;
+        this.category = inits.isInitialized("category") ? new QCategory(forProperty("category"), inits.get("category")) : null;
         this.store = inits.isInitialized("store") ? new QStore(forProperty("store")) : null;
     }
 
